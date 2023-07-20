@@ -2,6 +2,10 @@ package cl.jpvs.mod5ej16
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import cl.jpvs.mod5ej16.databinding.ActivityMainBinding
+import cl.jpvs.mod5ej16.databinding.ItemLoyoutBinding
+
 /* Pasos para crear un recycler view
 [  ] item layout
 [ ] agregar constraints
@@ -27,9 +31,25 @@ import android.os.Bundle
 * */
 * */
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PaisCallback {
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+       val adapter = Adapter()
+       val listaDePaises = PaisesLatam.paises
+       adapter.setData(listaDePaises)
+       binding.recyclerView.adapter = adapter
+        adapter.callback = this
+    }
+
+    override fun showcountry(s : String) {
+      binding.textViewPoblacion.text = s
     }
 }
+
